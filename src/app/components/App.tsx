@@ -22,7 +22,7 @@ const AppContainer = styled.div`
  font-family: 'Arial', sans-serif;
  padding: 20px;
  max-width: 800px;
- margin: 0 auto;
+ margin: 20px auto 0; /* Top margin added */
  background-color: var(--primary-text-color, #1a1a1a); /* Page background */
  color: var(--dark-background, #f9f9f9); /* Text on page */
 `;
@@ -32,6 +32,11 @@ const Title = styled.h1`
  color: var(--highlight-color, #bb86fc); /* Header text */
  text-align: center;
  margin-bottom: 20px;
+`;
+
+
+const Description = styled.p`
+ margin-bottom: 20px; /* Bottom margin added */
 `;
 
 
@@ -230,11 +235,11 @@ const App: React.FC = () => {
  return (
  <AppContainer>
  <Title>Logistics Management Application</Title>
- <p>
+ <Description>
  This application demonstrates the Factory Method design pattern by
  creating different types of transport objects (Truck and Ship) using a
  TransportFactory.
- </p>
+ </Description>
 
 
  <Section>
