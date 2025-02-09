@@ -106,7 +106,7 @@ const Input = styled.input`
  margin-right: 10px;
  font-size: 14px;
  color: var(--dark-background, #f9f9f9); /* Text in input */
- background-color: var(--chord-player-background, #eeeeee); /* Keep background */
+ background-color: var(--primary-text-color); /* Keep background */
 
 
  &::placeholder {
