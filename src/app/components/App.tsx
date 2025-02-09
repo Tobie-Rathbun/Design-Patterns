@@ -23,11 +23,13 @@ const AppContainer = styled.div`
  padding: 20px;
  max-width: 800px;
  margin: 0 auto;
+ background-color: var(--primary-text-color, #1a1a1a); /* Page background */
+ color: var(--dark-background, #f9f9f9); /* Text on page */
 `;
 
 
 const Title = styled.h1`
- color: #333;
+ color: var(--highlight-color, #bb86fc); /* Header text */
  text-align: center;
  margin-bottom: 20px;
 `;
@@ -36,22 +38,23 @@ const Title = styled.h1`
 const Section = styled.div`
  margin-bottom: 30px;
  padding: 20px;
- border: 1px solid #eee;
+ border: 1px solid var(--chord-element-border, #b3b3b3);
  border-radius: 8px;
- background-color: #f9f9f9;
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+ background-color: var(--secondary-text-color, #4a4a4a); /* Object background */
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Darker shadow */
+ color: var(--dark-background, #f9f9f9); /* Text in object */
 `;
 
 
 const SubTitle = styled.h2`
- color: #555;
+ color: var(--highlight-color, #bb86fc); /* Header text */
  margin-bottom: 15px;
 `;
 
 
 const StyledButton = styled.button`
- background-color: #4CAF50;
- color: white;
+ background-color: var(--accent-color-dark, #3700b3); /* Button background */
+ color: var(--dark-background, #f9f9f9); /* Text on button */
  padding: 10px 15px;
  border: none;
  border-radius: 5px;
@@ -61,13 +64,13 @@ const StyledButton = styled.button`
 
 
  &:hover {
- background-color: #367c39;
+ background-color: var(--accent-color, #6200ee); /* Active button */
  }
 
 
  &:focus {
  outline: none;
- box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+ box-shadow: 0 0 0 2px var(--highlight-color, #bb86fc);
  }
 `;
 
@@ -79,29 +82,44 @@ const TransportInfo = styled.div`
 
 
 const InfoParagraph = styled.p`
- color: #777;
+ color: var(--dark-background, #f9f9f9); /* Text in object */
  margin-bottom: 8px;
 `;
 
 
 const DeliveryMessage = styled.p`
  font-style: italic;
- color: #4CAF50;
+ color: var(--highlight-color, #bb86fc); /* Accent color */
  margin-top: 10px;
 `;
 
 
 const NoTransportMessage = styled.p`
- color: #999;
+ color: var(--secondary-text-color, #4a4a4a);
 `;
 
 
 const Input = styled.input`
  padding: 8px;
- border: 1px solid #ccc;
+ border: 1px solid var(--chord-element-border, #b3b3b3);
  border-radius: 4px;
  margin-right: 10px;
  font-size: 14px;
+ color: var(--dark-background, #f9f9f9); /* Text in input */
+ background-color: var(--chord-player-background, #eeeeee); /* Keep background */
+
+
+ &::placeholder {
+ color: var(--secondary-text-color, #4a4a4a); /* Dim placeholder */
+ opacity: 0.8;
+ }
+
+
+ &:focus {
+ outline: none;
+ border-color: var(--accent-color, #6200ee);
+ box-shadow: 0 0 0 2px var(--highlight-color-light, #e3d0ff);
+ }
 `;
 
 
@@ -111,11 +129,12 @@ const TransportList = styled.div`
 
 
 const TransportItem = styled.div`
- border: 1px solid #ddd;
+ border: 1px solid var(--chord-element-border, #b3b3b3);
  border-radius: 4px;
  padding: 10px;
  margin-bottom: 10px;
- background-color: #fff;
+ background-color: var(--secondary-text-color, #4a4a4a); /* Object background */
+ color: var(--dark-background, #f9f9f9); /* Text in object */
 `;
 
 
@@ -132,7 +151,8 @@ const App: React.FC = () => {
  const [ships, setShips] = useState<
  { name: string; transport: Transport; deliveryMessage: string }[]
  >([]);
- const [transportName, setTransportName] = useState<string>('');
+ const [truckName, setTruckName] = useState<string>('');
+ const [shipName, setShipName] = useState<string>('');
 
 
  const truckFactory = new TransportFactory('Truck');
@@ -144,13 +164,13 @@ const App: React.FC = () => {
  setTrucks((prevTrucks) => [
  ...prevTrucks,
  {
- name: transportName,
+ name: truckName,
  transport: newTruck,
  deliveryMessage: newTruck.deliver(),
  },
  ]);
- setTransportName(''); // Clear the input after creating
- }, [truckFactory, transportName]);
+ setTruckName(''); // Clear the input after creating
+ }, [truckFactory, truckName]);
 
 
  const createShip = useCallback(() => {
@@ -158,17 +178,22 @@ const App: React.FC = () => {
  setShips((prevShips) => [
  ...prevShips,
  {
- name: transportName,
+ name: shipName,
  transport: newShip,
  deliveryMessage: newShip.deliver(),
  },
  ]);
- setTransportName(''); // Clear the input after creating
- }, [shipFactory, transportName]);
+ setShipName(''); // Clear the input after creating
+ }, [shipFactory, shipName]);
 
 
- const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
- setTransportName(e.target.value);
+ const handleTruckNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+ setTruckName(e.target.value);
+ };
+
+
+ const handleShipNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+ setShipName(e.target.value);
  };
 
 
@@ -203,10 +228,10 @@ const App: React.FC = () => {
  <Input
  type="text"
  placeholder="Enter Truck Name"
- value={transportName}
- onChange={handleNameChange}
+ value={truckName}
+ onChange={handleTruckNameChange}
  />
- <StyledButton onClick={createTruck} disabled={!transportName}>
+ <StyledButton onClick={createTruck} disabled={!truckName}>
  Create Truck
  </StyledButton>
  <TransportList>
@@ -226,10 +251,10 @@ const App: React.FC = () => {
  <Input
  type="text"
  placeholder="Enter Ship Name"
- value={transportName}
- onChange={handleNameChange}
+ value={shipName}
+ onChange={handleShipNameChange}
  />
- <StyledButton onClick={createShip} disabled={!transportName}>
+ <StyledButton onClick={createShip} disabled={!shipName}>
  Create Ship
  </StyledButton>
  <TransportList>

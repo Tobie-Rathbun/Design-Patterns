@@ -3,8 +3,24 @@
 @tailwind utilities;
 
 :root {
+  /* Default (light mode) variables */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Color Variables */
+  --dark-background: #f9f9f9;
+  --primary-text-color: #1a1a1a;
+  --secondary-text-color: #4a4a4a;
+  --accent-color: #6200ee;
+  --accent-color-dark: #3700b3;
+  --highlight-color: #bb86fc;
+  --highlight-color-dark: #9a67ea;
+  --highlight-color-light: #e3d0ff;
+
+  /* Component-Specific Colors */
+  --chord-player-background: #eeeeee;
+  --chord-element-background: #d6d6d6;
+  --chord-element-border: #b3b3b3;
 }
 
 @media (prefers-color-scheme: dark) {
