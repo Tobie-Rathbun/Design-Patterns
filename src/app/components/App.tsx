@@ -96,15 +96,43 @@ const NoTransportMessage = styled.p`
 `;
 
 
+const Input = styled.input`
+ padding: 8px;
+ border: 1px solid #ccc;
+ border-radius: 4px;
+ margin-right: 10px;
+ font-size: 14px;
+`;
+
+
+const TransportList = styled.div`
+ margin-top: 20px;
+`;
+
+
+const TransportItem = styled.div`
+ border: 1px solid #ddd;
+ border-radius: 4px;
+ padding: 10px;
+ margin-bottom: 10px;
+ background-color: #fff;
+`;
+
+
+interface TransportItemProps {
+ name: string;
+ deliveryMessage: string;
+}
+
+
 const App: React.FC = () => {
- const [truck, setTruck] = useState<Transport | null>(null);
- const [ship, setShip] = useState<Transport | null>(null);
- const [truckDeliveryMessage, setTruckDeliveryMessage] = useState<string>(
- '',
- );
- const [shipDeliveryMessage, setShipDeliveryMessage] = useState<string>(
- '',
- );
+ const [trucks, setTrucks] = useState<
+ { name: string; transport: Transport; deliveryMessage: string }[]
+ >([]);
+ const [ships, setShips] = useState<
+ { name: string; transport: Transport; deliveryMessage: string }[]
+ >([]);
+ const [transportName, setTransportName] = useState<string>('');
 
 
  const truckFactory = new TransportFactory('Truck');
@@ -113,16 +141,51 @@ const App: React.FC = () => {
 
  const createTruck = useCallback(() => {
  const newTruck = truckFactory.createTransport();
- setTruck(newTruck);
- setTruckDeliveryMessage(newTruck.deliver());
- }, [truckFactory]);
+ setTrucks((prevTrucks) => [
+ ...prevTrucks,
+ {
+ name: transportName,
+ transport: newTruck,
+ deliveryMessage: newTruck.deliver(),
+ },
+ ]);
+ setTransportName(''); // Clear the input after creating
+ }, [truckFactory, transportName]);
 
 
  const createShip = useCallback(() => {
  const newShip = shipFactory.createTransport();
- setShip(newShip);
- setShipDeliveryMessage(newShip.deliver());
- }, [shipFactory]);
+ setShips((prevShips) => [
+ ...prevShips,
+ {
+ name: transportName,
+ transport: newShip,
+ deliveryMessage: newShip.deliver(),
+ },
+ ]);
+ setTransportName(''); // Clear the input after creating
+ }, [shipFactory, transportName]);
+
+
+ const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+ setTransportName(e.target.value);
+ };
+
+
+ const TransportItemComponent: React.FC<TransportItemProps> = ({
+ name,
+ deliveryMessage,
+ }) => (
+ <TransportItem>
+ <InfoParagraph>
+ <strong>Name:</strong> {name}
+ </InfoParagraph>
+ <InfoParagraph>
+ <strong>Delivery Method:</strong>
+ </InfoParagraph>
+ <DeliveryMessage>{deliveryMessage}</DeliveryMessage>
+ </TransportItem>
+ );
 
 
  return (
@@ -137,39 +200,47 @@ const App: React.FC = () => {
 
  <Section>
  <SubTitle>Truck Transport</SubTitle>
- <StyledButton onClick={createTruck}>Create Truck</StyledButton>
- {truck ? (
- <TransportInfo>
- <InfoParagraph>
- <strong>Type:</strong> Truck
- </InfoParagraph>
- <InfoParagraph>
- <strong>Delivery Method:</strong>
- </InfoParagraph>
- <DeliveryMessage>{truckDeliveryMessage}</DeliveryMessage>
- </TransportInfo>
- ) : (
- <NoTransportMessage>No Truck created yet.</NoTransportMessage>
- )}
+ <Input
+ type="text"
+ placeholder="Enter Truck Name"
+ value={transportName}
+ onChange={handleNameChange}
+ />
+ <StyledButton onClick={createTruck} disabled={!transportName}>
+ Create Truck
+ </StyledButton>
+ <TransportList>
+ {trucks.map((truck, index) => (
+ <TransportItemComponent
+ key={index}
+ name={truck.name}
+ deliveryMessage={truck.deliveryMessage}
+ />
+ ))}
+ </TransportList>
  </Section>
 
 
  <Section>
  <SubTitle>Ship Transport</SubTitle>
- <StyledButton onClick={createShip}>Create Ship</StyledButton>
- {ship ? (
- <TransportInfo>
- <InfoParagraph>
- <strong>Type:</strong> Ship
- </InfoParagraph>
- <InfoParagraph>
- <strong>Delivery Method:</strong>
- </InfoParagraph>
- <DeliveryMessage>{shipDeliveryMessage}</DeliveryMessage>
- </TransportInfo>
- ) : (
- <NoTransportMessage>No Ship created yet.</NoTransportMessage>
- )}
+ <Input
+ type="text"
+ placeholder="Enter Ship Name"
+ value={transportName}
+ onChange={handleNameChange}
+ />
+ <StyledButton onClick={createShip} disabled={!transportName}>
+ Create Ship
+ </StyledButton>
+ <TransportList>
+ {ships.map((ship, index) => (
+ <TransportItemComponent
+ key={index}
+ name={ship.name}
+ deliveryMessage={ship.deliveryMessage}
+ />
+ ))}
+ </TransportList>
  </Section>
  </AppContainer>
  );
