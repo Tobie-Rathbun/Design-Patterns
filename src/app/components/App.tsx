@@ -197,6 +197,20 @@ const App: React.FC = () => {
  };
 
 
+ const handleTruckEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+ if (e.key === 'Enter' && truckName) {
+ createTruck();
+ }
+ };
+
+
+ const handleShipEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+ if (e.key === 'Enter' && shipName) {
+ createShip();
+ }
+ };
+
+
  const TransportItemComponent: React.FC<TransportItemProps> = ({
  name,
  deliveryMessage,
@@ -230,6 +244,7 @@ const App: React.FC = () => {
  placeholder="Enter Truck Name"
  value={truckName}
  onChange={handleTruckNameChange}
+ onKeyDown={handleTruckEnterPress}
  />
  <StyledButton onClick={createTruck} disabled={!truckName}>
  Create Truck
@@ -253,6 +268,7 @@ const App: React.FC = () => {
  placeholder="Enter Ship Name"
  value={shipName}
  onChange={handleShipNameChange}
+ onKeyDown={handleShipEnterPress}
  />
  <StyledButton onClick={createShip} disabled={!shipName}>
  Create Ship
