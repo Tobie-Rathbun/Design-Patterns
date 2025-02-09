@@ -2,7 +2,7 @@
 'use client'; // This indicates that this component is a client component
 
 import React from 'react';
-import App from './factory-method/App'; // Ensure the path is correct
+import App from './App'; // Ensure the path is correct
 
 const Page: React.FC = () => {
     return <App />; // Render the App component directly
