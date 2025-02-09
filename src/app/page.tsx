@@ -1,12 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './components/App';
+// app/page.tsx
+'use client'; // This indicates that this component is a client component
 
-const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
-);
-root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+import React from 'react';
+import App from './components/App'; // Ensure the path is correct
+
+const Page: React.FC = () => {
+    return <App />; // Render the App component directly
+};
+
+export default Page; // This should be the default export

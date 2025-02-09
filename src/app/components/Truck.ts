@@ -1,9 +1,10 @@
+// app/components/Truck.ts
 import { Transport } from './Transport';
 
 // Concrete product: Truck
 class Truck implements Transport {
-    deliver(): void {
-        console.log('Delivering cargo by land in a truck.');
+    deliver(): string {
+        return 'Delivering cargo by land in a truck.';
     }
 }
 

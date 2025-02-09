@@ -1,4 +1,4 @@
-// Transport interface that declares the deliver method
+// app/components/Transport.ts
 export interface Transport {
-    deliver(): void;
+    deliver(): string; 
 }
